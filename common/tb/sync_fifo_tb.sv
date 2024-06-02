@@ -56,43 +56,46 @@ module sync_fifo_tb;
     din = 0;
 
     // Apply reset
-    #20;
+    @(posedge clk); #0;
+    rst = 1;
+    @(posedge clk); #0;
     rst = 0;
-    #10;
 
     // Write some data to FIFO
+    @(posedge clk); #0;
     wr_en = 1;
     for (int i = 0; i < DEPTH; i++) begin
       din = i;
-      #10;
+      @(posedge clk); #0;
     end
     wr_en = 0;
 
     // Read data from FIFO
+    @(posedge clk); #0;
     rd_en = 1;
     for (int i = 0; i < DEPTH; i++) begin
-      #10;
+      @(posedge clk); #0;
     end
     rd_en = 0;
 
     // Check almost full and almost empty conditions
+    @(posedge clk); #0;
     wr_en = 1;
     for (int i = 0; i < (DEPTH - FULL_THRESHOLD); i++) begin
       din = i;
-      #10;
+      @(posedge clk); #0;
     end
     wr_en = 0;
 
-    #20;
-
+    @(posedge clk); #0;
     rd_en = 1;
     for (int i = 0; i < (DEPTH - EMPTY_THRESHOLD); i++) begin
-      #10;
+      @(posedge clk); #0;
     end
     rd_en = 0;
 
     // End of test
-    #50;
+    @(posedge clk); #0;
     $finish();
   end
 
@@ -105,7 +108,7 @@ module sync_fifo_tb;
   // Dump File on EDA Playground
   initial begin
     $dumpfile("dump.vcd");
-    $dumpvars(0);
+    $dumpvars(0, sync_fifo_tb);
   end
 
 endmodule
