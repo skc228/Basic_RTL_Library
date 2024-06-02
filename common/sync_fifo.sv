@@ -95,4 +95,11 @@ module sync_fifo
             mem[wr_ptr] <= din;
         end
     end
+
+    // Assertion for err_checker
+    always @(posedge clk) begin
+        if(!rst)
+            assert (!err_checker) else $error("Error: err_checker is high!");
+    end
+
 endmodule
